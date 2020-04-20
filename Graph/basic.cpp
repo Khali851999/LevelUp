@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <bitset>
+#include <unordered_map>
 #define N 7
 using namespace std;
 class Edge
@@ -28,10 +29,11 @@ void makeGraph()
     addEdge(graph, 0, 3, 10);
     addEdge(graph, 1, 2, 10);
     addEdge(graph, 2, 3, 40);
-    addEdge(graph, 3, 4, 2);
+    // addEdge(graph, 3, 4, 2);
     addEdge(graph, 4, 5, 2);
     addEdge(graph, 4, 6, 3);
     addEdge(graph, 5, 6, 8);
+    // addEdge(graph, 2, 5, 10);
 }
 void display(vector<vector<Edge>> &g)
 {
@@ -132,6 +134,141 @@ int allInOne(int src, int des, Node &ans, int w, int data)
     return c;
 }
 //================================================Paths===================================================================
+
+void hamintonianCycle(int src, int osrc, int visited, int n, string ans)
+{
+    if (n == 1)
+    {
+        if (getIndex(osrc, src) == -1)
+        {
+            cout << "Path: " + ans + to_string(src) << endl;
+        }
+        else
+        {
+            cout << "Cycle: " + ans + to_string(src) << endl;
+        }
+        return;
+    }
+
+    int mask = (1 << src);
+    visited ^= mask;
+
+    for (auto x : graph[src])
+    {
+        int mask1 = (1 << x.v);
+        if (!(visited & mask1))
+        {
+            hamintonianCycle(x.v, osrc, visited, n - 1, ans + to_string(src) + " ");
+        }
+    }
+}
+//=====================================================Hamitonian cycle=======================================================
+int GCC_DFS(int vertex, int &vis)
+{
+    int size = 0;
+    int mask = (1 << vertex);
+    vis ^= mask;
+    for (auto x : graph[vertex])
+    {
+        int mask1 = (1 << x.v);
+        if (!(vis & mask1))
+        {
+            size += GCC_DFS(x.v, vis);
+        }
+    }
+    return size + 1;
+}
+
+int GCC(int vertex)
+{
+    int vis = 0;
+    int maxSize = 0;
+    for (int i = 0; i < graph.size(); i++)
+    {
+        int mask = (1 << i);
+        if (!(vis & mask))
+        {
+            maxSize = max(maxSize, GCC_DFS(i, vis));
+        }
+    }
+    return maxSize;
+}
+//========================================Get-Connected-Components=========================================================
+unordered_map<string, bool> umap;
+// string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string ans)
+// {
+//     if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
+//         return "";
+
+//     string s = "";
+//     a[i][j] = 0;
+//     if (i + 1 < n && a[i + 1][j] == 1)
+//     {
+//         if (j + 1 < m && a[i][j + 1] == 1)
+//             s += 'D' + dfs_DistinctIslands(a, n, m, i + 1, j, ans + 'D') + 'b';
+//         else
+//             s += 'D' + dfs_DistinctIslands(a, n, m, i + 1, j, ans + 'D');
+//     }
+
+//     if (j + 1 < m && a[i][j + 1] == 1)
+//     {
+//         s += '  R' + dfs_DistinctIslands(a, n, m, i, j + 1, ans + 'R');
+//     }
+
+//     return s;
+// }
+
+// string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string &ans)
+// {
+//     if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
+//         return "";
+
+//     a[i][j] = 0;
+//     ans += to_string(i - n) + to_string(j - m) + "  ";
+//     string res;
+//     res += dfs_DistinctIslands(a, n, m, i + 1, j, ans) + "D";
+//     res += dfs_DistinctIslands(a, n, m, i - 1, j + 1, ans) + "U";
+//     res += dfs_DistinctIslands(a, n, m, i, j + 1, ans) + "R";
+//     res += dfs_DistinctIslands(a, n, m, i, j - 1, ans) + "L";
+
+//     return res;
+// }
+
+string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string ans)
+{
+    if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
+        return "";
+
+    a[i][j] = 0;
+
+    string res;
+    res += dfs_DistinctIslands(a, n, m, i + 1, j, ans) + "D";
+    res += dfs_DistinctIslands(a, n, m, i - 1, j + 1, ans) + "U";
+    res += dfs_DistinctIslands(a, n, m, i, j + 1, ans) + "R";
+    res += dfs_DistinctIslands(a, n, m, i, j - 1, ans) + "L";
+
+    return res;
+}
+int countDistinctIslands(vector<vector<int>> &a)
+{
+    int n = a.size();
+    int m = a[0].size();
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (a[i][j] == 1)
+            {
+                string ans;
+                string s = dfs_DistinctIslands(a, i, j, i, j, ans);
+                cout << ans << endl;
+                umap[ans] = 1;
+            }
+        }
+    }
+    return umap.size();
+}
+
 int main()
 {
     makeGraph();
@@ -147,5 +284,16 @@ int main()
     // cout << allInOne(0, 6, ans, 0, 20) << endl;
     // cout << ans.minval << ":" << ans.maxval << ":" << ans.ceil << ":" << ans.floor << endl;
 
+    // hamintonianCycle(0, 0, 0, 7, "");
+
+    //Get maximum sized connected component from multiple disconnected componenets
+    // cout << GCC(0);
+
+    vector<vector<int>> grid = {{1, 1, 0, 1, 1},
+                                {1, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 1},
+                                {1, 1, 0, 1, 1}};
+
+    cout << countDistinctIslands(grid) << endl;
     return 0;
 }
