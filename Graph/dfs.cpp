@@ -4,6 +4,9 @@
 #include <unordered_map>
 #define N 7
 using namespace std;
+
+//===================================================Basic===================================================================
+
 class Edge
 {
 public:
@@ -78,10 +81,11 @@ void removeVertex(int v)
     }
     graph[v].erase(graph[v].begin(), graph[v].end());
 }
-//===================================================Basic===================================================================
 
+//================================================Paths===================================================================
 //1-> mark
-//2-> call for all unvisited neighbours
+//2-> for all unvisited neighbours
+//     2.1-> call dfs
 bitset<32> visited(0);
 int printAllPaths(int src, int des, string ans)
 {
@@ -133,7 +137,8 @@ int allInOne(int src, int des, Node &ans, int w, int data)
 
     return c;
 }
-//================================================Paths===================================================================
+
+//=====================================================Hamitonian cycle=======================================================
 
 void hamintonianCycle(int src, int osrc, int visited, int n, string ans)
 {
@@ -162,7 +167,8 @@ void hamintonianCycle(int src, int osrc, int visited, int n, string ans)
         }
     }
 }
-//=====================================================Hamitonian cycle=======================================================
+
+//========================================Get-Connected-Components=========================================================
 int GCC_DFS(int vertex, int &vis)
 {
     int size = 0;
@@ -193,31 +199,11 @@ int GCC(int vertex)
     }
     return maxSize;
 }
-//========================================Get-Connected-Components=========================================================
+
+//====================================================DISTINCT-ISLANDS-LEETCODE 860======================================================
 unordered_map<string, bool> umap;
-// string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string ans)
-// {
-//     if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
-//         return "";
 
-//     string s = "";
-//     a[i][j] = 0;
-//     if (i + 1 < n && a[i + 1][j] == 1)
-//     {
-//         if (j + 1 < m && a[i][j + 1] == 1)
-//             s += 'D' + dfs_DistinctIslands(a, n, m, i + 1, j, ans + 'D') + 'b';
-//         else
-//             s += 'D' + dfs_DistinctIslands(a, n, m, i + 1, j, ans + 'D');
-//     }
-
-//     if (j + 1 < m && a[i][j + 1] == 1)
-//     {
-//         s += '  R' + dfs_DistinctIslands(a, n, m, i, j + 1, ans + 'R');
-//     }
-
-//     return s;
-// }
-
+//RELATIVE COORDINATED METHOD
 // string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string &ans)
 // {
 //     if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
@@ -234,18 +220,19 @@ unordered_map<string, bool> umap;
 //     return res;
 // }
 
+//STRING MOVE METHOD
 string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j, string ans)
 {
     if (i < 0 || i >= a.size() || j < 0 || j >= a[0].size() || a[i][j] == 0)
-        return "";
+        return "b";
 
     a[i][j] = 0;
 
-    string res;
-    res += dfs_DistinctIslands(a, n, m, i + 1, j, ans) + "D";
-    res += dfs_DistinctIslands(a, n, m, i - 1, j + 1, ans) + "U";
-    res += dfs_DistinctIslands(a, n, m, i, j + 1, ans) + "R";
-    res += dfs_DistinctIslands(a, n, m, i, j - 1, ans) + "L";
+    string res = "";
+    res += "D"+dfs_DistinctIslands(a, n, m, i + 1, j, ans);
+    res += "U"+dfs_DistinctIslands(a, n, m, i - 1, j, ans);
+    res += "R"+dfs_DistinctIslands(a, n, m, i, j + 1, ans);
+    res += "L"+dfs_DistinctIslands(a, n, m, i, j - 1, ans);
 
     return res;
 }
@@ -261,8 +248,8 @@ int countDistinctIslands(vector<vector<int>> &a)
             {
                 string ans;
                 string s = dfs_DistinctIslands(a, i, j, i, j, ans);
-                cout << ans << endl;
-                umap[ans] = 1;
+                cout << s << endl;
+                umap[s] = 1;
             }
         }
     }
