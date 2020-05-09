@@ -51,6 +51,8 @@ void display(vector<vector<Edge>> &g)
 }
 
 //==========================================TOPOLOGICAL SORT==================================================================
+
+//TYPE 1 : DFS(can be valid or not)
 void topologicalSort_(int src, vector<bool> &visited, vector<int> &ans)
 {
     visited[src] = 1;
@@ -75,6 +77,7 @@ void topologicalSort()
         cout << x << " ";
 }
 
+//TYPE 2: BFS(Always valid if size is same)
 //leetcode 207 210
 bool KahnAlgo(int num)
 {
@@ -120,52 +123,6 @@ bool KahnAlgo(int num)
     return false;
 }
 
-int SCC_DFS(vector<vector<int>> &newGraph, int src, vector<bool> &vis, vector<int> &ans)
-{
-    vis[src] = 1;
-    int count = 0;
-    for (auto x : newGraph[src])
-    {
-        if (!vis[x])
-            count += SCC_DFS(newGraph, x, vis, ans);
-    }
-    ans.push_back(src);
-    return count;
-}
-int SCC()
-{
-    vector<bool> vis(N);
-    vector<int> ans;
-    for (int i = 0; i < N; i++)
-    {
-        if (!vis[i])
-            topologicalSort_(i, vis, ans);
-    }
-
-    vector<vector<int>> newGraph(N, vector<int>());
-
-    for (int i = 0; i < N; i++)
-    {
-        for (auto x : graph[i])
-        {
-            newGraph[x.v].push_back(i);
-        }
-    }
-
-    vis.clear();
-    vis.resize(N);
-    vector<int> res;
-    for (int i = ans.size() - 1; i >= 0; i--)
-    {
-        if (!vis[i])
-        {
-            int size = SCC_DFS(newGraph, i, vis, res);
-            for (int i = 0; i < size; i++)
-                cout << res[i] << " ";
-            cout << endl;
-        }
-    }
-}
 int main()
 {
     makeGraph();

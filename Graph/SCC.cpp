@@ -30,6 +30,11 @@ int SCC_DFS(vector<vector<int>> &newGraph, int src, vector<bool> &vis, vector<in
 }
 int SCC(vector<vector<int>> &graph)
 {
+
+//1. Find topological Sort using DFS(postorder push_backin ans vector)
+//2. Reverse the graph 
+//3. call DFS using the reverse of topological sort obtained and push_back elements in post order
+//4. count the number of call to be made and that is the count of SCC
     vector<bool> vis(N, false);
     vector<int> ans;
     for (int i = 0; i < N; i++)
@@ -57,6 +62,7 @@ int SCC(vector<vector<int>> &graph)
         if (!vis[ans[i]])
         {
             noOfSCC++;
+            res.clear();
             int size = SCC_DFS(newGraph, ans[i], vis, res);
             for (int j = 0; j < size; j++)
                 cout << res[j] << " ";
@@ -83,12 +89,14 @@ int main()
     addvertex(graph, 6, 5);
     addvertex(graph, 5, 4);
 
-    for (int i = 0; i < N; i++)
-    {
-        for (auto x : graph[i])
-            cout << x << " ";
-        cout << endl;
-    }
+    // for (int i = 0; i < N; i++)
+    // {
+    //     for (auto x : graph[i])
+    //         cout << x << " ";
+    //     cout << endl;
+    // }
+    cout<<endl;
     cout << SCC(graph);
     return 0;
 }
+

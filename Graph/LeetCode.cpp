@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
 // //339. Nested List Weight Sum
 
 // /**
@@ -189,8 +192,8 @@
 
 //======================================+++SNAKES AND LADDER==========================================================
 
-
 //===========LEETCODE 1061(SMALLEST LEXIOGRAPHICAL)======================================================
+
 // #include <bits/stdc++.h>
 // vector<int> par;
 // int findPar(int vtx)
@@ -258,3 +261,101 @@
 //     }
 //     return count;
 // }
+
+//============================================MR PRESIDENT=========================================================
+//https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/practice-problems/algorithm/mr-president/description/
+vector<int> par;
+int getPar(int v)
+{
+    if (par[v] != v)
+        par[v] = getPar(par[v]);
+
+    return par[v];
+}
+lli mrPresident()
+{
+    lli n, m, k;
+    cin >> n >> m >> k;
+    vector<vector<int>> g;
+    while (m--)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g.push_back({u, v, w});
+    }
+    for (int i = 0; i <= n; i++)
+        par.push_back(i);
+
+    sort(g.begin(), g.end(), [](vector<int> &a, vector<int> &b) {
+        return a[2] < b[2];
+    });
+    lli roadcost = 0;
+    vector<vector<int>> kruskalGraph;
+    for (auto x : g)
+    {
+        int p1 = getPar(x[0]);
+        int p2 = getPar(x[1]);
+        if (p1 != p2)
+        {
+            kruskalGraph.push_back(x);
+            roadcost += x[2];
+            par[p1] = p2;
+        }
+    }
+    int noOfComponents = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (par[i] == i && ++noOfComponents > 1)
+            return -1;
+    }
+
+    int roadsToRemove = 0;
+    for (int i = kruskalGraph.size() - 1; i >= 0; i--)
+    {
+        if (roadcost <= k)
+            break;
+
+        roadsToRemove++;
+        roadcost = roadcost - kruskalGraph[i][2] + 1;
+    }
+
+    return (roadcost <= k) ? roadsToRemove : -1;
+}
+
+//====================================================ROADS AND LIBRARIES======================================
+//https://www.hackerrank.com/challenges/torque-and-development/problem
+long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
+{
+    int m = cities.size();
+
+    //adding cost to repair all roads graph[i]={u,v,w}
+    for (auto &x : cities)
+        x.push_back(c_road);
+
+    //adding cost to construct new library in each city
+    //if there exists an edge btw 0 and i it means we are considering adding a library in city i
+    for (int i = 1; i <= m; i++)
+    {
+        cities.push_back({0, i, c_lib});
+    }
+
+    par.clear();
+    for (int i = 0; i <= n; i++)
+        par.push_back(i);
+
+    sort(cities.begin(), cities.end(), [](vector<int> &a, vector<int> &b) {
+        return a[2] < b[2];
+    });
+    long cost = 0;
+    for (auto x : cities)
+    {
+        int p1 = getPar(x[0]);
+        int p2 = getPar(x[1]);
+        if (p1 != p2)
+        {
+            cost += x[2];
+            par[p1] = p2;
+        }
+    }
+    return cost;
+}
