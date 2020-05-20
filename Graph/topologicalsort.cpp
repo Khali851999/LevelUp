@@ -122,6 +122,42 @@ bool KahnAlgo(int num)
     }
     return false;
 }
+//========================================Cycle in Directed Graph===================================================
+bool topologiaclSortCycle_(int src, vector<int> vis, vector<int> &ans)
+{ // faith: it will detect cycle.
+    if (vis[src] == 1)
+        return true; //cycle.
+    if (vis[src] == 2)
+        return false; // already visited vertex.gragph
+
+    vis[src] = 1;
+    bool res = false;
+    for (auto e : graph[src])
+        res = res || topologiaclSortCycle_(e.v, vis, ans);
+
+    vis[src] = 2;
+    ans.push_back(src);
+    return res;
+}
+
+void topologiaclSortCycle()
+{
+    vector<int> vis(N, 0);
+    vector<int> ans;
+
+    bool res = false;
+    for (int i = 0; i < N && !res; i++)
+    {
+        if (vis[i] == 0)
+            res = res || topologiaclSortCycle_(i, vis, ans);
+    }
+
+    if (!res)
+        for (int i = ans.size() - 1; i >= 0; i--)
+            cout << ans[i] << endl;
+    else
+        cout << "Cycle" << endl;
+}
 
 int main()
 {

@@ -229,10 +229,10 @@ string dfs_DistinctIslands(vector<vector<int>> &a, int &n, int &m, int i, int j,
     a[i][j] = 0;
 
     string res = "";
-    res += "D"+dfs_DistinctIslands(a, n, m, i + 1, j, ans);
-    res += "U"+dfs_DistinctIslands(a, n, m, i - 1, j, ans);
-    res += "R"+dfs_DistinctIslands(a, n, m, i, j + 1, ans);
-    res += "L"+dfs_DistinctIslands(a, n, m, i, j - 1, ans);
+    res += "D" + dfs_DistinctIslands(a, n, m, i + 1, j, ans);
+    res += "U" + dfs_DistinctIslands(a, n, m, i - 1, j, ans);
+    res += "R" + dfs_DistinctIslands(a, n, m, i, j + 1, ans);
+    res += "L" + dfs_DistinctIslands(a, n, m, i, j - 1, ans);
 
     return res;
 }
@@ -255,7 +255,39 @@ int countDistinctIslands(vector<vector<int>> &a)
     }
     return umap.size();
 }
+//==============================================Leetcode 802 -> Cycle in Directed Graph====================================================
+bool dfs(vector<vector<int>> &graph, int src, vector<int> &vis)
+{
+    if (vis[src] == 1)
+        return true;
+    if (vis[src] == 2)
+        return false; //iska mtlb wo kisi aur k path ka part tha,
+                      //jiska bhi part hoga usne usko check krlia
+                      //hoga for cycle to hume doobara zroorat nhi hai
+    vis[src] = 1;
+    for (auto x : graph[src])
+        if (dfs(graph, x, vis))
+            return true;
+    vis[src] = 2;
+    return false;
+}
+vector<int> eventualSafeNodes(vector<vector<int>> &graph)
+{
+    std::ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
+    int n = graph.size();
+    vector<int> vis(n, 0), ans;
+    for (int i = 0; i < n; i++)
+        if (vis[i] != 1 && !dfs(graph, i, vis))
+            ans.push_back(i);
+
+    return ans;
+}
+
+//===================================+Cycle in Undirected Graph==================================================
+//Use Union Find : if(p1==p2) -> cycle
 int main()
 {
     makeGraph();
