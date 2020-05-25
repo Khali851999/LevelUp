@@ -16,7 +16,6 @@ vector<Node*> NodetoRootpath(Node* node, int data)
     if(node==nullptr)return vector<Node*>();
     vector<Node*> l=NodetoRootpath(node->left,data);
     vector<Node*> r=NodetoRootpath(node->right,data);
-    if(l)
 }
 int main()
 {
