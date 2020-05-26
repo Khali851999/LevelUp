@@ -93,6 +93,7 @@ void RightView_2(Node *node)
     for (auto x : rightView)
         cout << x << endl;
 }
+
 //==============================================VERTICAL VIEW=========================================================
 void verticalTraversal(Node *root)
 {
@@ -131,3 +132,228 @@ void verticalTraversal(Node *root)
         cout << endl;
     }
 }
+
+//====================================Vertical Order Sum==========================================================================
+void VerticalOrderSum(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    int left = 1e7, right = -1e7;
+    width(root, 0, left, right);
+
+    int view[right - left + 1] = {};
+
+    queue<pair<Node *, int>> q;
+    q.push({root, -left});
+    while (q.size())
+    {
+        int size = q.size();
+        while (size--)
+        {
+            auto p = q.front();
+            q.pop();
+            Node *val = p.first;
+            int x = p.second;
+
+            view[x] += val->val;
+
+            if (val->left != nullptr)
+                q.push({val->left, x - 1});
+            if (val->right != nullptr)
+                q.push({val->right, x + 1});
+        }
+    }
+}
+
+//====================================Bottom View==========================================================================
+//last element of each vertical level
+void width(Node *root, int x, int &left, int &right)
+{
+    if (root == nullptr)
+        return;
+
+    right = max(right, x);
+    left = min(left, x);
+
+    width(root->left, x - 1, left, right);
+    width(root->right, x + 1, left, right);
+}
+void BottomView(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    int left = 1e7, right = -1e7;
+    width(root, 0, left, right);
+
+    int view[right - left + 1] = {};
+
+    queue<pair<Node *, int>> q;
+    q.push({root, -left});
+    while (q.size())
+    {
+        int size = q.size();
+        while (size--)
+        {
+            auto p = q.front();
+            q.pop();
+            Node *val = p.first;
+            int x = p.second;
+
+            view[x] = val->val;
+
+            if (val->left != nullptr)
+                q.push({val->left, x - 1});
+            if (val->right != nullptr)
+                q.push({val->right, x + 1});
+        }
+    }
+
+    for (auto y : view)
+        cout << y << " ";
+    cout << endl;
+}
+
+//====================================Top View==========================================================================
+//first element of each vertical level
+void BottomView(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    int left = 1e7, right = -1e7;
+    width(root, 0, left, right);
+
+    vector<int> view(right - left + 1, 1e7);
+
+    queue<pair<Node *, int>> q;
+    q.push({root, -left});
+    while (q.size())
+    {
+        int size = q.size();
+        while (size--)
+        {
+            auto p = q.front();
+            q.pop();
+            Node *val = p.first;
+            int x = p.second;
+
+            if (view[x] == 1e7)
+                view[x] = val->val;
+
+            if (val->left != nullptr)
+                q.push({val->left, x - 1});
+            if (val->right != nullptr)
+                q.push({val->right, x + 1});
+        }
+    }
+    for (auto y : view)
+        cout << y << " ";
+    cout << endl;
+}
+
+//=========================================Main Diagonal Traversal (\)===================================================================
+//left jaate hue x-1 krro right jaate hue same rhne do ( its part of same diagonal)
+void mainDiagonalWidth(Node *root, int x, int &left)
+{
+    if (root == nullptr)
+        return;
+
+    left = min(left, x);
+
+    mainDiagonalWidth(root->left, x - 1, left);
+    mainDiagonalWidth(root->right, x, left);
+}
+
+void MainDiagonalTraversal(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    int left = 1e7;
+    mainDiagonalWidth(root, 0, left);
+
+    vector<vector<int>> view(-left + 1, vector<int>());
+
+    queue<pair<Node *, int>> q;
+    q.push({root, -left});
+    while (q.size())
+    {
+        int size = q.size();
+        while (size--)
+        {
+            auto p = q.front();
+            q.pop();
+            Node *val = p.first;
+            int x = p.second;
+
+            view[x].push_back(val->val);
+
+            if (val->left != nullptr)
+                q.push({val->left, x - 1});
+            if (val->right != nullptr)
+                q.push({val->right, x});
+        }
+    }
+    for (auto x : view)
+    {
+        for (auto y : x)
+            cout << y << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+//=========================================Secondary Diagonal View (/)===================================================================
+void secondaryDiagonalWidth(Node *root, int x, int &right)
+{
+    if (root == nullptr)
+        return;
+
+    right = max(right, x);
+
+    secondaryDiagonalWidth(root->left, x, right);
+    secondaryDiagonalWidth(root->right, x + 1, right);
+}
+
+void SecondayDiagonalTraversal(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    int right = -1e7;
+    secondaryDiagonalWidth(root, 0, right);
+
+    vector<vector<int>> view(right + 1, vector<int>());
+
+    queue<pair<Node *, int>> q;
+    q.push({root, 0});
+    while (q.size())
+    {
+        int s = q.size();
+        while (s--)
+        {
+            auto p = q.front();
+            q.pop();
+            Node *val = p.first;
+            int x = p.second;
+
+            view[x].push_back(val->val);
+
+            if (val->left != nullptr)
+                q.push({val->left, x});
+            if (val->right != nullptr)
+                q.push({val->right, x + 1});
+        }
+    }
+
+    for (auto x : view)
+    {
+        for (auto y : x)
+            cout << y << " ";
+        cout << endl;
+    }
+}
+
+//======================================Binary Tree as Doubly Linked List=========================================================
