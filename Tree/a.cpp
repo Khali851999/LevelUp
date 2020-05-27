@@ -22,13 +22,22 @@ bool isBipartite(int n, vector<vector<int>> &edges)
     g.resize(n, vector<int>());
     for (auto x : edges)
     {
-        int u = x[0]-1;
-        int v = x[1]-1;
+        int u = x[0] - 1;
+        int v = x[1] - 1;
         g[u].push_back(v);
         g[v].push_back(u);
     }
     vector<int> vis(n, -1);
-    return dfs(0, vis, 0);
+    for (int i = 0; i < n; i++)
+        if (vis[i] == -1)
+            if (!dfs(i, vis, 0))
+                return 0;
+    return 1;
+    // bool res = 1;
+    // for (int i = 0; i < n; i++)
+    //     if (vis[i] == -1)
+    //         res &= dfs(i, vis, 0);
+    // return res;
 }
 int main()
 {
