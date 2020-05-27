@@ -376,6 +376,7 @@ void dll(Node *root)
     }
     tail = root;
     dll(root->right);
+    
 }
 void bToDLL(Node *root, Node **head_ref)
 {
@@ -384,13 +385,13 @@ void bToDLL(Node *root, Node **head_ref)
     dll(root);
     while (head != nullptr)
     {
-        cout << head->data << " ";
+        cout << head->val << " ";
         head = head->right;
     }
     cout << endl;
     while (tail != nullptr)
     {
-        cout << tail->data << " ";
+        cout << tail->val << " ";
         tail = tail->left;
     }
 }

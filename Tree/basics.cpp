@@ -12,7 +12,7 @@ public:
     }
 };
 
-//============================================create Tree from preorder======================================================
+//==============================================create Tree from preorder========================================================
 int pos = 0;
 Node *createTree(vector<int> preOrder)
 {
@@ -44,6 +44,10 @@ vector<Node *> NodetoRootpath(Node *root, int data)
 {
     if (root == nullptr)
         return vector<Node *>();
+
+    if (root->val == data)
+        return {root};
+
     vector<Node *> l = NodetoRootpath(root->left, data);
     if (!l.empty())
     {
@@ -56,12 +60,15 @@ vector<Node *> NodetoRootpath(Node *root, int data)
         r.push_back(root);
         return r;
     }
-    return {root};
+    return {};
 }
 int main()
 {
     vector<int> preOrder = {11, 6, 4, -1, 5, -1, -1, 8, -1, 10, -1, -1, 19, 17, -1, -1, 43, 31, -1, -1, 49, -1, -1};
     Node *root = createTree(preOrder);
     displayTree(root);
+    vector<Node *> rootToNode = NodetoRootpath(root, 49);
+    for (auto y : rootToNode)
+        cout << y->val << " ";
     return 0;
 }
