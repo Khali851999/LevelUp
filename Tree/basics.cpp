@@ -40,7 +40,7 @@ void displayTree(Node *root)
 }
 
 //===========================================NodetoRootPath=====================================================================================
-vector<Node *> NodetoRootpath(Node *root, int data)
+vector<Node *> RootToNodepath(Node *root, int data)
 {
     if (root == nullptr)
         return vector<Node *>();
@@ -48,13 +48,13 @@ vector<Node *> NodetoRootpath(Node *root, int data)
     if (root->val == data)
         return {root};
 
-    vector<Node *> l = NodetoRootpath(root->left, data);
+    vector<Node *> l = RootToNodepath(root->left, data);
     if (!l.empty())
     {
         l.push_back(root);
         return l;
     }
-    vector<Node *> r = NodetoRootpath(root->right, data);
+    vector<Node *> r = RootToNodepath(root->right, data);
     if (!r.empty())
     {
         r.push_back(root);
@@ -62,13 +62,40 @@ vector<Node *> NodetoRootpath(Node *root, int data)
     }
     return {};
 }
+void RootToNodepath_(Node *root, int data, vector<Node *> &path)
+{
+    if (root == nullptr)
+        return;
+
+    if (root->val == data)
+    {
+        path.push_back(root);
+        return;
+    }
+
+    RootToNodepath_(root->left, data, path);
+    if (!path.empty())
+    {
+        path.push_back(root);
+        return;
+    }
+    RootToNodepath_(root->right, data, path);
+    if (!path.empty())
+    {
+        path.push_back(root);
+        return;
+    }
+}
 int main()
 {
     vector<int> preOrder = {11, 6, 4, -1, 5, -1, -1, 8, -1, 10, -1, -1, 19, 17, -1, -1, 43, 31, -1, -1, 49, -1, -1};
     Node *root = createTree(preOrder);
     displayTree(root);
-    vector<Node *> rootToNode = NodetoRootpath(root, 49);
+    // vector<Node *> rootToNode = NodetoRootpath(root, 49);
+    vector<Node *> rootToNode;
+    RootToNodepath_(root, 49, rootToNode);
     for (auto y : rootToNode)
-        cout << y->val << " ";
+        cout
+            << y->val << " ";
     return 0;
 }
