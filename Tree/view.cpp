@@ -357,3 +357,40 @@ void SecondayDiagonalTraversal(Node *root)
 }
 
 //======================================Binary Tree as Doubly Linked List=========================================================
+Node *head = nullptr;
+Node *tail = nullptr;
+void dll(Node *root)
+{
+    if (root == nullptr)
+        return;
+
+    dll(root->left);
+    if (tail == nullptr)
+    {
+        head = root;
+    }
+    else
+    {
+        tail->right = root;
+        root->left = tail;
+    }
+    tail = root;
+    dll(root->right);
+}
+void bToDLL(Node *root, Node **head_ref)
+{
+    head = nullptr;
+    tail = nullptr;
+    dll(root);
+    while (head != nullptr)
+    {
+        cout << head->data << " ";
+        head = head->right;
+    }
+    cout << endl;
+    while (tail != nullptr)
+    {
+        cout << tail->data << " ";
+        tail = tail->left;
+    }
+}
