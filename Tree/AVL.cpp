@@ -70,6 +70,12 @@ Node *rr(Node *A)
 Node *rl(Node *A)
 {
     Node *B = A->right;
+    A->right = ll(B);
+    return rr(A);
+}
+Node *rl(Node *A)
+{
+    Node *B = A->right;
     Node *C = B->left;
     Node *Cleft = C->left;
     Node *Cright = C->right;
@@ -103,7 +109,8 @@ Node *lr(Node *A)
 }
 Node *addition(Node *root, int data)
 {
-    if(root==nullptr)return new Node(data);
+    if (root == nullptr)
+        return new Node(data);
     if (data > root->val)
     {
         root->right = addition(root->right, data);
