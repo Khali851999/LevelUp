@@ -125,6 +125,8 @@ bool isBipartite_(int src, vector<vector<Edge>> &g, vector<int> &visited)
                 //if the element is not visited yet or have different clr than only if can continue
                 if (visited[x.v] == -1)
                     q.push({x.v, (clr + 1) % 2});
+                else if (visited[x.v] !=(clr + 1) % 2)
+                    return false;
             }
         }
     }

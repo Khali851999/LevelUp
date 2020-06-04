@@ -93,7 +93,7 @@ bool dfs(int src, vector<int> &vis, vector<vector<int>> &g, int clr)
         int clr1 = (clr + 1) % 2;
         if (vis[x] == -1)
             ans &= dfs(x, vis, g, clr1);
-        if (vis[x] != clr1)
+        else if (vis[x] != clr1)
             return 0;
     }
     return ans;
