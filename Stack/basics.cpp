@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-void nextGreaterLR(vector<int> &a)
+void next_greater_on_right(vector<int> &a)
 {
 
     stack<int> st;
@@ -20,10 +20,9 @@ void nextGreaterLR(vector<int> &a)
     for (auto x : ans)
         cout << x << " ";
     cout << endl;
-    
 }
 
-void nextSmallerLR(vector<int> &a)
+void next_smaller_on_right(vector<int> &a)
 {
 
     stack<int> st;
@@ -45,7 +44,7 @@ void nextSmallerLR(vector<int> &a)
     cout << endl;
 }
 
-void nextGreaterRL(vector<int> &a)
+void next_greater_on_left(vector<int> &a)
 {
 
     stack<int> st;
@@ -67,7 +66,7 @@ void nextGreaterRL(vector<int> &a)
     cout << endl;
 }
 
-void nextSmallerRL(vector<int> &a)
+void next_smaller_on_left(vector<int> &a)
 {
 
     stack<int> st;
@@ -90,9 +89,9 @@ void nextSmallerRL(vector<int> &a)
 }
 int main()
 {
-    vector<int> arr = {5, 8, 9, -1, 6, 2, 3, 7};
-    nextGreaterLR(arr);
-    nextSmallerLR(arr);
-    nextGreaterRL(arr);
-    nextSmallerRL(arr);
+    vector<int> arr = {2, -1, 8, 6, 9, 4, 3, 5};
+    next_greater_on_right(arr);
+    next_smaller_on_right(arr);
+    next_greater_on_left(arr);
+    next_smaller_on_left(arr);
 }
