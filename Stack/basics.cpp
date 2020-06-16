@@ -20,6 +20,7 @@ void nextGreaterLR(vector<int> &a)
     for (auto x : ans)
         cout << x << " ";
     cout << endl;
+    
 }
 
 void nextSmallerLR(vector<int> &a)
