@@ -250,10 +250,11 @@ int goldMineProblem()
 int ways_to_partition_TD(int n, int k, vector<vector<int>> &dp)
 {
 
-    if (n <= k || n == 0)
+    if (n <= k || k == 1)
     {
-        if (n == k)
+        if (n == k || k == 1)
             return 1;
+
         return 0;
     }
 
