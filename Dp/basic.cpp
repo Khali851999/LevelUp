@@ -84,6 +84,14 @@ int ways_BU(int sr, int sc, int er, int ec, int n, int m, vector<vector<int>> &d
 
     return dp[0][0];
 }
+int boardProblems()
+{
+    int n = 3, m = 3;
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+    cout << ways_TD(0, 0, n - 1, m - 1, n, m, dp) << endl;
+    display2D(dp);
+    return ways_BU(0, 0, n - 1, m - 1, n, m, dp);
+}
 //=============================================DICEWAYS===============================================
 int diceWays_TD(int start, int end, vector<int> &dp)
 {
@@ -163,14 +171,107 @@ int minCostClimbingStairs(int i, vector<int> &cost)
     int amt2 = min(minCostClimbingStairs(i + 2, cost), minCostClimbingStairs(i + 3, cost));
     return min(amt1, amt2) + cost[i];
 }
+int stairProblem()
+{
+    int n = 10;
+    vector<int> dp(n + 1, -1);
+    cout << climbStairs_TD(n, dp);
+    display1D(dp);
+    return climbStairs_BU(n, dp);
+}
+
+//======================================FRIENDS PAIRING==============================
+// int pairing(int n)
+// {
+
+//     if (n <= 1)
+//         return dp[n] = 1;
+
+//     if (dp[n] != -1)
+//         return dp[n];
+
+//     int single = pairing(n - 1);
+//     int pairUp = (n * 1) * pairing(n - 2);
+
+//     return dp[n] = single + pairUp;
+// }
+//================================================GOLD MINE PROBLEM======================================
+int goldMine_TD(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp)
+{
+
+    int n = grid.size();
+    int m = grid[0].size();
+
+    if (i < 0 || i >= n || j < 0 || j >= m)
+        return 0;
+
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    if (j == m - 1)
+        return dp[i][j] = grid[i][j];
+
+    vector<vector<int>> dir = {{-1, 1}, {0, 1}, {1, 1}};
+    int goldCollected = 0;
+    for (int d = 0; d < 3; d++)
+    {
+        int r = i + dir[d][0];
+        int c = j + dir[d][1];
+
+        if (r >= 0 && r < n && c >= 0 && c < m)
+        {
+            goldCollected = max(goldCollected, goldMine_TD(r, c, grid, dp));
+        }
+    }
+
+    return dp[i][j] = goldCollected + grid[i][j];
+}
+int goldMineProblem()
+{
+    vector<vector<int>> grid = {{1, 3, 1, 5},
+                                {2, 2, 4, 1},
+                                {5, 0, 2, 3},
+                                {0, 6, 1, 2}};
+
+    int n = grid.size();
+    int m = grid[0].size();
+
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+
+    int maxGoldCollected = 0;
+    for (int i = 0; i < n; i++)
+    {
+        maxGoldCollected = max(maxGoldCollected, goldMine_TD(i, 0, grid, dp));
+    }
+    display2D(dp);
+    return maxGoldCollected;
+}
+//===========================================n numbers in k subsets===================================
+int ways_to_partition_TD(int n, int k, vector<vector<int>> &dp)
+{
+
+    if (n <= k || n == 0)
+    {
+        if (n == k)
+            return 1;
+        return 0;
+    }
+
+    int placeInKless1 = ways_to_partition_TD(n - 1, k - 1);
+    int placeInK = ways_to_partition_TD(n - 1, k);
+
+    return placeInKless1 + k * placeInK;
+}
+int ways_to_partition()
+{
+    int n = 10;
+    int k = 2;
+    vector<vector<int>> dp(n, vector<int>(k, -1));
+    return ways_to_partition_TD(n, k, dp);
+}
 int main()
 {
-    // int n = 3, m = 3;
-    // dp.resize(n, vector<int>(m, -1));
-    // cout << ways_TD(0, 0, n - 1, m - 1, n, m) << endl;
-    // display2D(dp);
-    // cout << ways_BU(0, 0, n - 1, m - 1, n, m) << endl;
-    // display2D(dp);
+    // cout<<boardProblems()<<endl;
 
     // vector<int> dp(11, -1);
     // cout << diceWays_TD(0, 10, dp) << endl;
@@ -178,11 +279,11 @@ int main()
     // cout << diceWays_BU(0, 10, dp) << endl;
     // display1D(dp);
 
-    int n = 10;
-    vector<int> dp(n + 1, -1);
-    // cout << climbStairs_TD(n, dp);
-    // display1D(dp);
-    cout << climbStairs_BU(n, dp);
-    display1D(dp);
+    // cout<<stairProblem()<<endl;
+
+    // cout << goldMineProblem();
+
+    cout << ways_to_partition() << endl;
+
     return 0;
 }
