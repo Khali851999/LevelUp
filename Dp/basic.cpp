@@ -247,28 +247,68 @@ int goldMineProblem()
     return maxGoldCollected;
 }
 //===========================================n numbers in k subsets===================================
-int ways_to_partition_TD(int n, int k, vector<vector<int>> &dp)
+// int ways_to_partition_TD(int n, int k, vector<vector<int>> &dp)
+// {
+
+//     if (n <= k || k == 1)
+//     {
+//         if (n == k || k == 1)
+//             return 1;
+
+//         return 0;
+//     }
+
+//     int placeInKless1 = ways_to_partition_TD(n - 1, k - 1);
+//     int placeInK = ways_to_partition_TD(n - 1, k);
+
+//     return placeInKless1 + k * placeInK;
+// }
+// int ways_to_partition()
+// {
+//     int n = 10;
+//     int k = 2;
+//     vector<vector<int>> dp(n, vector<int>(k, -1));
+//     return ways_to_partition_TD(n, k, dp);
+// }
+//=============================================================================
+int longestPalindromeSubseq_TD(string &s, int l, int r, vector<vector<int>> &dp)
 {
 
-    if (n <= k || k == 1)
-    {
-        if (n == k || k == 1)
-            return 1;
-
+    if (l < 0 || r >= s.size() || l > r)
         return 0;
+
+    if (l == r)
+        return 1;
+
+    if (dp[l][r] != 0)
+        return dp[l][r];
+
+    int len = 0;
+    if (s[l] == s[r])
+
+        len = longestPalindromeSubseq_TD(s, l + 1, r - 1, dp) + 2;
+
+    else
+    {
+
+        len = max(len, longestPalindromeSubseq_TD(s, l + 1, r, dp));
+        len = max(len, longestPalindromeSubseq_TD(s, l, r - 1, dp));
     }
 
-    int placeInKless1 = ways_to_partition_TD(n - 1, k - 1);
-    int placeInK = ways_to_partition_TD(n - 1, k);
-
-    return placeInKless1 + k * placeInK;
+    return dp[l][r] = len;
 }
-int ways_to_partition()
+int longestPalindromeSubseq()
 {
-    int n = 10;
-    int k = 2;
-    vector<vector<int>> dp(n, vector<int>(k, -1));
-    return ways_to_partition_TD(n, k, dp);
+    string s = "geeksforgeeks";
+
+    int n = s.size();
+
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    longestPalindromeSubseq_TD(s, 0, n - 1, dp);
+
+    display2D(dp);
+    return dp[0][n - 1];
 }
 int main()
 {
@@ -284,7 +324,9 @@ int main()
 
     // cout << goldMineProblem();
 
-    cout << ways_to_partition() << endl;
+    // cout << ways_to_partition() << endl;
+
+    cout << longestPalindromeSubseq() << endl;
 
     return 0;
 }
