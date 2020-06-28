@@ -270,7 +270,7 @@ int goldMineProblem()
 //     vector<vector<int>> dp(n, vector<int>(k, -1));
 //     return ways_to_partition_TD(n, k, dp);
 // }
-//=============================================================================
+//=============================================substring ans subsequences===================================================
 int longestPalindromeSubseq_TD(string &s, int l, int r, vector<vector<int>> &dp)
 {
 
