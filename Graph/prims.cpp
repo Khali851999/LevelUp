@@ -81,9 +81,9 @@ void prims(int src)
     vector<bool> vis(N);
     pq.push(Node(src, -1, 0));
     vector<vector<Edge>> dGraph(N, vector<Edge>());
-    while (pq.maxsize())
+    while (pq.size())
     {
-        int maxsize = pq.maxsize();
+        int maxsize = pq.size();
         while (maxsize--)
         {
             auto val = pq.top();
