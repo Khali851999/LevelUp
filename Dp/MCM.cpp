@@ -15,7 +15,7 @@ void display1D(vector<int> &arr)
         cout << x << " ";
     cout << endl;
 }
-
+//faith:
 int MCM_TD(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
 {
 
@@ -64,15 +64,51 @@ int MCM_BU(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
 
     return dp[0][n - 1];
 }
+
+//==================================OPTIMAL BST===================================
+int OptimalBST_TD(vector<int> &key, vector<int> &freq, int si, int ei, vector<vector<int>> &dp, vector<int>& prefixSum)
+{
+
+    if (dp[si][ei] != -1)
+        return dp[si][ei];
+
+    if (si + 1 == ei)
+        return dp[si][ei] = 0;
+
+    int ans = INT_MAX;
+    for (int root = si; root < ei; root++)
+    {
+        int left = OptimalBST_TD(key, freq, si, root - 1, dp, prefixSum);
+        int right = OptimalBST_TD(key, freq, root + 1, ei, dp, prefixSum);
+
+        ans = min(ans, left + right + prefixSum[ei] - prefixSum[si - 1]);
+    }
+
+    return dp[si][ei] = ans;
+}
+void OptimalBST()
+{
+    vector<int> keys={};
+    vector<int> freq={};
+    sort(keys.begin(), keys.end());
+}
+
+//======================================================MATRIX CHAIN MULTIPLICATION
 void MCM()
 {
     vector<int> arr = {1, 2, 3, 4, 5, 6};
     int n = arr.size();
+
     vector<vector<int>> dp(n, vector<int>(n, -1));
-    // MCM_TD(arr, 0, n - 1, dp);
-    // display2D(dp);
-    // MCM_BU(arr, 0, n - 1, dp);
-    // display2D(dp);
+    MCM_TD(arr, 0, n - 1, dp);
+    display2D(dp);
+    MCM_BU(arr, 0, n - 1, dp);
+    display2D(dp);
+}
+
+//==============================================================================================================
+void BurstBallons()
+{
 }
 int main()
 {
