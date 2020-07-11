@@ -4,12 +4,15 @@ class Heap
 {
 public:
     vector<int> arr;
-    Heap(vector<int> a)
+    bool isMaxHeap = true;
+
+    Heap(vector<int> a, bool isMaxHeap)
     {
         this->arr = a;
+        this->isMaxHeap = isMaxHeap;
 
         for (int i = arr.size() - 1; i >= 0; i--)
-            downHeapify(i, arr.size());   //O(n)
+            downHeapify(i, arr.size()); //O(n)
     }
     int top() //O(1)
     {
@@ -41,6 +44,16 @@ public:
     {
         return arr.size();
     }
+
+    bool compare(int x, int y)
+    {
+
+        if (isMaxHeap)
+            return x > y;
+        else
+            return x < y;
+
+    }
     void downHeapify(int pi, int n) //O(log n)
     {
         //pi -> parentIdx
@@ -50,11 +63,17 @@ public:
 
         int maxIdx = pi; //idx of maxElement
 
-        if (lci < n && arr[lci] > arr[maxIdx])
+        if (lci < n && compare(arr[lci], arr[maxIdx]))
             maxIdx = lci;
 
-        if (rci < n && arr[rci] > arr[maxIdx])
+        if (rci < n && compare(arr[rci], arr[maxIdx]))
             maxIdx = rci;
+
+        // if (lci < n && arr[lci] > arr[maxIdx])
+        //     maxIdx = lci;
+
+        // if (rci < n && arr[rci] > arr[maxIdx])
+        //     maxIdx = rci;
 
         if (maxIdx != pi)
         {
@@ -69,23 +88,27 @@ public:
 
         int minIdx = ci;
 
-        if (arr[pi] < arr[minIdx])
+        if (pi >= 0 && compare(arr[minIdx], arr[pi]))
             minIdx = pi;
+
+        // if (pi >= 0 && arr[pi] < arr[minIdx])
+        //     minIdx = pi;
 
         if (minIdx != ci)
         {
             swap(arr[minIdx], arr[ci]);
-            upHeapify(pi, arr.size());
+            upHeapify(minIdx, arr.size());
         }
     }
 };
 int main()
 {
     vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13};
-    Heap heap(arr);
+    Heap heap(arr, 0);
 
-    heap.push(100);
-    heap.push(5);
+    heap.push(18);
+    heap.push(-5);
+    heap.push(201);
 
     while (!heap.empty()) //O(n log n)
     {
