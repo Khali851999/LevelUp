@@ -9,8 +9,9 @@ public:
         this->arr = a;
 
         for (int i = arr.size() - 1; i >= 0; i--)
+        {
             downHeapify(i, arr.size());
-
+        }
     }
     int top()
     {
@@ -51,10 +52,10 @@ public:
 
         int maxIdx = pi; //idx of maxElement
 
-        if (lci < n && arr[lci] > arr[pi])
+        if (lci < n && arr[lci] > arr[maxIdx])
             maxIdx = lci;
 
-        if (rci < n && arr[rci] > arr[pi])
+        if (rci < n && arr[rci] > arr[maxIdx])
             maxIdx = rci;
 
         if (maxIdx != pi)
@@ -70,7 +71,7 @@ public:
 
         int minIdx = ci;
 
-        if (arr[pi] < arr[ci])
+        if (arr[pi] < arr[minIdx])
             minIdx = pi;
 
         if (minIdx != ci)
@@ -84,7 +85,8 @@ int main()
 {
     vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13};
     Heap heap(arr);
-
+    heap.push(100);
+    heap.push(5);
     while (!heap.empty())
     {
         cout << heap.top() << " ";
