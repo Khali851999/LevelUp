@@ -7,6 +7,10 @@ public:
     Heap(vector<int> arr)
     {
         this->arr = arr;
+
+        for (int i = arr.size() - 1; i >= 0; i--)
+            downHeapify(i, arr.size());
+            
     }
     int top()
     {
@@ -15,7 +19,7 @@ public:
 
         return arr[0];
     }
-    int push(int ele)
+    void push(int ele)
     {
         arr.push_back(ele);
         upHeapify(arr.size() - 1, arr.size());
@@ -40,15 +44,17 @@ public:
     }
     void downHeapify(int pi, int n)
     {
-        int lci = 2 * pi + 1;
-        int rci = 2 * pi + 2;
+        //pi -> parentIdx
 
-        int maxIdx = pi;
+        int lci = 2 * pi + 1; //leftChildIdx
+        int rci = 2 * pi + 2; //rightChildIdx
 
-        if (arr[lci] > arr[pi])
+        int maxIdx = pi; //idx of maxElement
+
+        if (lci < n && arr[lci] > arr[pi])
             maxIdx = lci;
 
-        if (arr[rci] > arr[pi])
+        if (rci < n && arr[rci] > arr[pi])
             maxIdx = rci;
 
         if (maxIdx != pi)
@@ -73,8 +79,15 @@ public:
             upHeapify(pi, arr.size());
         }
     }
-    
 };
 int main()
 {
+    vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13};
+    Heap heap(arr);
+
+    while (!heap.empty())
+    {
+        cout << heap.top() << " ";
+        heap.pop();
+    }
 }
