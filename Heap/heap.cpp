@@ -9,23 +9,21 @@ public:
         this->arr = a;
 
         for (int i = arr.size() - 1; i >= 0; i--)
-        {
-            downHeapify(i, arr.size());
-        }
+            downHeapify(i, arr.size());   //O(n)
     }
-    int top()
+    int top() //O(1)
     {
         if (arr.size() == 0)
             return -1;
 
         return arr[0];
     }
-    void push(int ele)
+    void push(int ele) //O(log n)
     {
         arr.push_back(ele);
         upHeapify(arr.size() - 1, arr.size());
     }
-    void pop()
+    void pop() //O(log n)
     {
         if (arr.size() == 0)
             return;
@@ -35,15 +33,15 @@ public:
 
         downHeapify(0, arr.size());
     }
-    bool empty()
+    bool empty() //O(1)
     {
         return arr.size() == 0;
     }
-    int size()
+    int size() //O(1)
     {
         return arr.size();
     }
-    void downHeapify(int pi, int n)
+    void downHeapify(int pi, int n) //O(log n)
     {
         //pi -> parentIdx
 
@@ -65,7 +63,7 @@ public:
         }
     }
 
-    void upHeapify(int ci, int n)
+    void upHeapify(int ci, int n) //O(log n)
     {
         int pi = (ci - 1) / 2;
 
@@ -85,9 +83,11 @@ int main()
 {
     vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13};
     Heap heap(arr);
+
     heap.push(100);
     heap.push(5);
-    while (!heap.empty())
+
+    while (!heap.empty()) //O(n log n)
     {
         cout << heap.top() << " ";
         heap.pop();
