@@ -4,13 +4,13 @@ class Heap
 {
 public:
     vector<int> arr;
-    Heap(vector<int> arr)
+    Heap(vector<int> a)
     {
-        this->arr = arr;
+        this->arr = a;
 
         for (int i = arr.size() - 1; i >= 0; i--)
             downHeapify(i, arr.size());
-            
+
     }
     int top()
     {
