@@ -310,6 +310,33 @@ int longestPalindromeSubseq()
     display2D(dp);
     return dp[0][n - 1];
 }
+//===================================Longest Alternating Subs=================================================
+int LongestAlternatingSubs(vector<int> &a)
+{
+
+    int n = a.size();
+    vector<vector<int>> dp(n, vector<int>(2, 1));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (a[j] < a[i])
+                dp[i][1] = max(dp[i][1], dp[j][0] + 1);
+            else if (a[j] > a[i])
+                dp[i][0] = max(dp[i][0], dp[j][1] + 1);
+        }
+    }
+
+    for (auto x : dp)
+    {
+        for (auto y : x)
+            cout << y << " ";
+        cout << endl;
+    }
+
+    return max(dp[n - 1][0], dp[n - 1][1]);
+}
 int main()
 {
     // cout<<boardProblems()<<endl;
@@ -326,7 +353,10 @@ int main()
 
     // cout << ways_to_partition() << endl;
 
-    cout << longestPalindromeSubseq() << endl;
+    // cout << longestPalindromeSubseq() << endl;
+
+    vector<int> arr = {10, 22, 9, 33, 49, 50, 31, 60};
+    cout << LongestAlternatingSubs(arr);
 
     return 0;
 }
