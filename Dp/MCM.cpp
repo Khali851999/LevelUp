@@ -64,7 +64,9 @@ int MCM_BU(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
 
     return dp[0][n - 1];
 }
-int MCM_Brackets(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
+
+//return the order of brackets to minimze operations
+string MCM_Brackets(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
 {
     int n = arr.size();
     vector<vector<string>> sdp(n, vector<string>(n, ""));
@@ -104,8 +106,8 @@ int MCM_Brackets(vector<int> &arr, int si, int ei, vector<vector<int>> &dp)
     //     cout << endl;
     // }
 
-    cout << sdp[0][n - 1];
-    return dp[0][n - 1];
+    cout << sdp[0][n - 1]<<endl;
+    return sdp[0][n - 1];
 }
 //==================================OPTIMAL BST===================================
 int OptimalBST_TD(vector<int> &key, vector<int> &freq, int si, int ei, vector<vector<int>> &dp, vector<int> &prefixSum)
