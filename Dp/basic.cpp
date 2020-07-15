@@ -311,9 +311,8 @@ int longestPalindromeSubseq()
     return dp[0][n - 1];
 }
 //===================================Longest Alternating Subs=================================================
-int LongestAlternatingSubs(vector<int> &a)
+int LAS(vector<int> &a)
 {
-
     int n = a.size();
     vector<vector<int>> dp(n, vector<int>(2, 1));
 
@@ -337,6 +336,40 @@ int LongestAlternatingSubs(vector<int> &a)
 
     return max(dp[n - 1][0], dp[n - 1][1]);
 }
+int getSign(int n)
+{
+    if (n == 0)
+        return 0;
+
+    return n > 0 ? 1 : -1;
+}
+int LAS_Opti(vector<int> &a)
+{
+    int n = a.size();
+    int lastSign = 0, length = 1;
+
+    for (int i = 1; i < n; i++)
+    {
+        //1 for increasing -1 for decreasing and 0 for equal elements
+        int sign = getSign(a[i] - a[i - 1]);
+
+        //we have to count the series of alternate (1 and -1) or (-1 and 1) where there is no 0 included except the first ele
+        if (sign != lastSign && sign != 0)
+        {
+            lastSign = sign;
+            length++;
+        }
+    }
+
+    return length;
+}
+int LongestAlternatingSubs()
+{
+    vector<int> arr = {10, 22, 9, 33, 49, 50, 31, 60};
+    // return LAS(arr); //O(n2) O(n2)
+    return LAS_Opti(arr); //O(n) O(1)
+}
+
 int main()
 {
     // cout<<boardProblems()<<endl;
@@ -355,8 +388,7 @@ int main()
 
     // cout << longestPalindromeSubseq() << endl;
 
-    vector<int> arr = {10, 22, 9, 33, 49, 50, 31, 60};
-    cout << LongestAlternatingSubs(arr);
+    cout << LongestAlternatingSubs();
 
     return 0;
 }
