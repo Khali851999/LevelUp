@@ -103,12 +103,14 @@ public:
 };
 int main()
 {
-    vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13};
+    vector<int> arr = {10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, -9, 6, 11, 99};
     Heap heap(arr, 0);
 
     heap.push(18);
     heap.push(-5);
     heap.push(201);
+    heap.push(116);
+    heap.pop();
 
     while (!heap.empty()) //O(n log n)
     {
