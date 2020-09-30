@@ -5,6 +5,9 @@
 #include <algorithm>
 using namespace std;
 vector<int> par;
+void union_by_rank(){
+    
+}
 int findPar(int vtx)
 {
     if (par[vtx] == vtx)
