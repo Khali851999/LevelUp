@@ -81,6 +81,50 @@ void removeVertex(int v)
 }
 
 //=======================================================basic====================================================================
+bool isCycle(int src, vector<int> &vis)
+{
+    queue<int> q;
+    q.push(src);
+
+    while (q.size())
+    {
+        int size = q.size();
+        while (size--)
+        {
+            int top = q.front();
+            q.pop();
+
+            if(vis[top] == 1){
+                return true;
+            }
+
+            vis[top] = 1;
+            for(auto x: g[top]){
+                if(!vis[x])
+                    q.push(x);
+            }
+
+        }
+        
+    }
+
+    return true;
+    
+}
+
+bool cycle(){
+
+    vector<int> vis(n, 0);
+    bool ans = 0;
+    for(int i=0;i<n;i++){
+        if(!vis[i])
+            ans = ans||isCycle(i,vis);
+    }
+
+    return ans;
+}
+
+
 //1. mark src
 //2. for all unvisited neighbours
 //   2.1 push in queue
